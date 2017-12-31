@@ -16,14 +16,16 @@ public class PlayerJump : MonoBehaviour
 
 	void Update ()
 	{
-
+		//checks if gameplay is running
 		if (Variables.playing) {
 			int fingerCount = 0;
-
+			//checks for correct game mode and makes sure that the camera is not panning 
 			if (Variables.gameMode == 1 && !CameraFollow.transition) {
+				//if a touch is registered on screen then the program will check the details on each tap 
 				if (Input.touchCount > 0) {
+					//loops through the finger touch array
 					foreach (Touch touch in Input.touches) {
-
+						//stores the position of the initial tap
 						if (touch.phase == TouchPhase.Began) {
 							startTap = touch.position;
 						}
@@ -31,11 +33,13 @@ public class PlayerJump : MonoBehaviour
 						if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled) {
 
 							fingerCount ++;
-
+							//once the user slides finger or lifts finger the program will check the distance from initial tap position
 							if (fingerCount == 1 && touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Moved) {
+								//if finger is slid 100px upwards then the following code is run to set up a character jump movement
 								if (touch.position.y - startTap.y > 100 && !Variables.jumped && ground && !Variables.jetPack) {
 									gameObject.GetComponent<AudioSource> ().Play ();
-									endpos = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 1F, gameObject.transform.position.z);
+									endpos = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 1F, 
+									                      gameObject.transform.position.z);
 									Variables.startpos = gameObject.transform.position;
 									Variables.straightJump = true;
 									ground = false;
@@ -140,7 +144,7 @@ public class PlayerJump : MonoBehaviour
 							currentTime = 0;
 
 						} else if (jumpPercent > 0.9 && apex) {
-							gameObject.transform.Find ("PlayerObject").GetComponent<AudioSource> ().Play ();
+							gameObject.transform.FindChild ("PlayerObject").GetComponent<AudioSource> ().Play ();
 							Variables.jumped = false;
 							apex = false;
 							gameObject.transform.position = endpos;
@@ -188,7 +192,7 @@ public class PlayerJump : MonoBehaviour
 					apex = true;
 
 				} else if (jumpPercent > 1 && apex) {
-					gameObject.transform.Find ("PlayerObject").GetComponent<AudioSource> ().Play ();
+					gameObject.transform.FindChild ("PlayerObject").GetComponent<AudioSource> ().Play ();
 					ground = true;
 					apex = false;
 					jumpPercent = 0;

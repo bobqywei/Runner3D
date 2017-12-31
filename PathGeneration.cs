@@ -43,19 +43,25 @@ public class PathGeneration : MonoBehaviour
 
 	void Update ()
 	{
-
+		//checks if game is running
 		if (Variables.playing) {
-
+			//loops through the entire array of paths
 			for (int i = 0; i < Variables.pathArray.Count; i++) {
-				Variables.pathArray [i].transform.position = new Vector3 (Variables.pathArray [i].transform.position.x, Variables.pathArray [i].transform.position.y, Variables.pathArray [i].transform.position.z - Variables.speed);
-
+				//all paths move towards the player at an increment
+				Variables.pathArray [i].transform.position = new Vector3 (Variables.pathArray [i].transform.position.x, 
+				                                                          Variables.pathArray [i].transform.position.y, 
+				                                                          Variables.pathArray [i].transform.position.z - Variables.speed);
+				//only proceeds with path generation if game mode is 1 and no transitions are active
 				if (!GameMode.modeTransition && Variables.gameMode == 1) {
+					//each time a path reaches the bottom, a new path will be generated
 					if (!Variables.boolArray [i] && Variables.pathArray [i].transform.position.z < 15.5 + (Variables.speed) / 2) {
 						Variables.boolArray [i] = true;
 
+						//randomly picks the path length and determines if object will be generated on path
 						objOnPath = Random.Range (1, 5);
 						pathlength = Random.Range (1, 6);
 
+						//depending on length, program will randomly pick a position for the path to be generated (3 positions)
 						if (consecutive > 2) {
 							pathchoice = 1;
 						} else if (pathlength >= 5) {
@@ -64,6 +70,7 @@ public class PathGeneration : MonoBehaviour
 							pathchoice = Random.Range (1, 4);
 						}
 
+						//instantiates new path object depending on predetermined properties and generates a position for the path
 						if (pathchoice == 1) {
 
 							consecutive = 0;
@@ -80,7 +87,11 @@ public class PathGeneration : MonoBehaviour
 							}
 
 							Variables.boolArray.Add (false);
-							Variables.pathArray [Variables.pathArray.Count - 1].transform.position = new Vector3 (Variables.pathArray [i].transform.position.x, Variables.pathArray [i].transform.position.y, Variables.pathArray [i].transform.position.z + Variables.lengthArray [i] / 2 + Variables.lengthArray [Variables.lengthArray.Count - 1] / 2 + 1);
+							Variables.pathArray [Variables.pathArray.Count - 1].transform.position = new Vector3 (Variables.pathArray [i].transform.position.x, 
+							                                                                                      Variables.pathArray [i].transform.position.y, 
+							                                                                                      Variables.pathArray [i].transform.position.z 
+							                                                                                      + Variables.lengthArray [i] / 2 
+							                                                                                      + Variables.lengthArray [Variables.lengthArray.Count - 1] / 2 + 1);
 
 						} else if (pathchoice == 2) {
 

@@ -57,8 +57,9 @@ public class Reset : MonoBehaviour
 					if (perc >= 1) {
 
 						Variables.gameMode = 1;
-						GameMode.mode = 1;
+						GameMode.mode = 0;
 						GameMode.modeTransition = false;
+						GameMode.timeLimit = Random.Range (15,20);
 						
 						Camera.transform.position = new Vector3(0.5f, 6, -9);
 						Camera.transform.eulerAngles = new Vector3(45, 355, 0);
@@ -79,7 +80,8 @@ public class Reset : MonoBehaviour
 						Menu.transform.position = new Vector3 (0,0,0);
 
 						Player.transform.position = new Vector3 (0, 0, 0);
-						Player.transform.Find ("PlayerObject").position = new Vector3 (0, 1.25F, -3);
+						Player.transform.FindChild ("PlayerObject").position = new Vector3 (0, 1.25F, -3);
+						Player.transform.GetComponentInChildren<MeshRenderer> ().enabled = true;
 						Camera.transform.position = new Vector3 (0.5F, 6, -9);
 						
 						Variables.rawSpeed = 5F;
@@ -101,6 +103,18 @@ public class Reset : MonoBehaviour
 
 						Variables.tileArray.Clear ();
 						Variables.tileBool.Clear ();
+
+						for (int i = 0; i < Variables.towerArrayLower.Count; i++) {
+							Destroy (Variables.towerArrayLower[i], 0);
+							Destroy (Variables.towerArrayUpper[i], 0);
+						}
+
+						Destroy (GameMode.jetpack, 0);
+						Destroy (DeathCheck.crashEffect, 0);
+
+						Variables.towerArrayLower.Clear ();
+						Variables.towerArrayUpper.Clear ();
+						Variables.towerBool.Clear ();
 						
 						/*for (int i = 0; i < Variables.waterblockArray.Count; i++) {
 							Destroy (Variables.waterblockArray [i], 0);
@@ -150,7 +164,7 @@ public class Reset : MonoBehaviour
 
 		} else if (!Variables.playing && Variables.playAgain && !DeathCheck.deathanim) {
 			Player.transform.position = new Vector3 (0, 0, 0);
-			Player.transform.Find ("PlayerObject").position = new Vector3 (0, 1.25F, -3);
+			Player.transform.FindChild ("PlayerObject").position = new Vector3 (0, 1.25F, -3);
 
 			if (Input.GetButtonDown ("down")) {
 				Variables.playing = true;
@@ -160,6 +174,7 @@ public class Reset : MonoBehaviour
 				foreach (Touch touch in Input.touches) {
 					if (touch.phase == TouchPhase.Ended) {
 						Variables.playing = true;
+						GameMode.startTime = Time.time;
 					}
 				}
 			}

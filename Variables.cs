@@ -23,6 +23,10 @@ public class Variables {
 	public static List<List <GameObject>> tileArray = new List<List<GameObject>>();
 	public static List<bool> tileBool = new List<bool>();
 
+	public static List<GameObject> towerArrayUpper = new List<GameObject>();
+	public static List<GameObject> towerArrayLower = new List<GameObject>();
+	public static List<bool> towerBool = new List<bool> ();
+
 	public static List<GameObject> waterblockArray = new List<GameObject>();
 	public static List<bool> waterGeneration = new List<bool>();
 
